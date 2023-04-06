@@ -1,4 +1,11 @@
-import { Badge, Box, Container, IconButton, InputBase, Paper } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Container,
+  IconButton,
+  InputBase,
+  Paper,
+} from "@mui/material";
 import Link from "next/link";
 import {
   ShoppingCartOutlined,
@@ -8,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import * as React from "react";
 import useToggle from "@/hooks/useToggle";
+import { useAppContext } from "@/context";
 
 export default function Header() {
   const {
@@ -15,6 +23,11 @@ export default function Header() {
     onOpen: handleOpen,
     onClose: handleClose,
   } = useToggle();
+  const { setQuery, query } = useAppContext();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
 
   return (
     <Container
@@ -44,6 +57,8 @@ export default function Header() {
           >
             <SearchOutlined style={{ fontSize: 17 }} />
             <InputBase
+              onChange={handleChange}
+              value={query}
               placeholder={"masukan yang ingin kamu cari?"}
               sx={{ ml: 2, width: "100%" }}
             />
