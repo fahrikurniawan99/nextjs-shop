@@ -35,7 +35,7 @@ export default function ProductCard({
           <Typography variant={"subtitle2"}>{category.name}</Typography>
           <Box sx={{width: "100%", overflowX:"auto", mt:1}}> 
             {tags.map((tag) => (
-              <Chip label={tag.name} />
+              <Chip label={tag.name} key={tag._id} />
             ))}
           </Box>
           <Button

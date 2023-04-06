@@ -10,8 +10,8 @@ export default function ProductsList({ products }: ProductsListProps) {
   return (
     <Box sx={{ margin: "20px 0" }}>
       <Grid container spacing={{ xs: 1, sm: 5 }}>
-        {products?.map((product) => {
-          return <ProductCard {...product} />;
+        {products?.map((product, index) => {
+          return <ProductCard {...product} key={index} />;
         })}
       </Grid>
     </Box>
