@@ -1,16 +1,15 @@
+import { productState } from "@/stores/product";
 import { Box, Grid } from "@mui/material";
-import React from "react";
+import { useAtom } from "jotai";
 import ProductCard from "./ProductCard";
 
-interface ProductsListProps {
-  products: Product[];
-}
+export default function ProductsList() {
+  const [products] = useAtom(productState);
 
-export default function ProductsList({ products }: ProductsListProps) {
   return (
     <Box sx={{ margin: "20px 0" }}>
       <Grid container spacing={{ xs: 1, sm: 5 }}>
-        {products?.map((product, index) => {
+        {products.data.map((product, index) => {
           return <ProductCard {...product} key={index} />;
         })}
       </Grid>
