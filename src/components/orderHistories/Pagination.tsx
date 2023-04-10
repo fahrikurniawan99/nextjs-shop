@@ -1,11 +1,19 @@
-import { fetchProductAtom, productPageAtom } from "@/stores/product";
+import * as React from "react";
 import { Pagination } from "@mui/material";
-import { useAtom } from "jotai";
 
-export default function ProductPagination({ loading }: { loading: boolean }) {
-  const [page, setPage] = useAtom(productPageAtom);
-  const [{ count, limit }] = useAtom(fetchProductAtom);
-
+export default function OrderPagination({
+  loading,
+  setPage,
+  page,
+  limit,
+  count
+}: {
+  loading: boolean;
+  page: number;
+  count: number;
+  limit: number
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+}) {
   return (
     <Pagination
       disabled={loading}

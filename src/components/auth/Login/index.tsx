@@ -2,6 +2,8 @@ import handleLogin from "@/libs/handleLogin";
 import { TextField } from "@mui/material";
 import * as React from "react";
 import AuthFormBase from "../AuthFormBase";
+import { useAtom } from "jotai";
+import { authAtom } from "@/stores/auth";
 
 interface FormState {
   email: string;
@@ -15,13 +17,14 @@ export default function Login() {
   });
   const isValid = form["email"] === "" || form["password"] === "";
   const [loading, setLoading] = React.useState(false);
+  const [auth, setAuth] = useAtom(authAtom)
 
   return (
     <AuthFormBase
       buttonText="Login"
       title={"Login"}
       disabled={!!isValid || loading}
-      onSubmit={() => handleLogin({ values: form, setLoading })}
+      onSubmit={() => handleLogin({ values: form, setLoading, setAuth:(value) => setAuth(value)})}
       loading={loading}
     >
       <TextField

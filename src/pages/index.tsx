@@ -1,19 +1,11 @@
-import CartDrawer from "@/components/ui/CartDrawer";
 import Header from "@/components/Header";
 import Category from "@/components/Home/Category";
 import Product from "@/components/Home/Product";
 import Tags from "@/components/Home/Tags";
-import useToggle from "@/hooks/useToggle";
 import { Container } from "@mui/material";
 import Head from "next/head";
 
 export default function Home() {
-  const {
-    open: isDrawerOpen,
-    onClose: closeDrawer,
-    onOpen: openDrawer,
-  } = useToggle();
-
   return (
     <>
       <Head>
@@ -23,12 +15,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Header openDrawer={openDrawer} />
+        <Header />
         <Container maxWidth="md" sx={{ width: "95%" }}>
           <Category />
-          <Tags />
+          <Tags /> 
           <Product />
-          <CartDrawer open={isDrawerOpen} onClose={closeDrawer} />
         </Container>
       </main>
     </>

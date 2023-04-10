@@ -4,17 +4,21 @@ import { Container, InputBase, Paper } from "@mui/material";
 import Link from "next/link";
 import HeaderItems from "./Items";
 import SearchBar from "./SearchBar";
+import CartDrawer from "../ui/CartDrawer";
 
-interface HeaderProps {
-  openDrawer: () => void;
-}
 
-export default function Header({ openDrawer }: HeaderProps) {
+export default function Header() {
   const {
     open: isOpen,
     onOpen: handleOpen,
     onClose: handleClose,
   } = useToggle();
+  const {
+    open: isDrawerOpen,
+    onOpen: openDrawer,
+    onClose: closeDrawer,
+  } = useToggle();
+
 
   return (
     <Container
@@ -27,14 +31,14 @@ export default function Header({ openDrawer }: HeaderProps) {
         alignItems: "center",
       }}
     >
-      {!isOpen ? (
-        <>
+      {/* {!isOpen ? (
+        <> */}
           <Link href={"/"} style={{ fontSize: "1.8rem", fontWeight: 700 }}>
             Shop
           </Link>
-          <SearchBar />
-          <HeaderItems handleOpen={handleOpen} openDrawer={openDrawer} />
-        </>
+          {/* <SearchBar /> */}
+          <HeaderItems handleOpen={handleOpen} openDrawer={openDrawer}  />
+        {/* </>
       ) : (
         <Paper
           component={"form"}
@@ -55,7 +59,8 @@ export default function Header({ openDrawer }: HeaderProps) {
             onClick={handleClose}
           />
         </Paper>
-      )}
+      )} */}
+      <CartDrawer open={isDrawerOpen} onClose={closeDrawer} />
     </Container>
   );
 }

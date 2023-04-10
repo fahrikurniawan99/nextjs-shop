@@ -1,36 +1,26 @@
-import { productState } from "@/stores/product";
+// import { productAtom } from "@/stores/product";
 import { Box, CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useAtom } from "jotai";
 import * as React from "react";
 import ProductPagination from "./ProductPagination";
 import ProductsList from "./ProductsList";
+import {
+  categoryAtom,
+  fetchProductAtom,
+  productPageAtom,
+  tagsSelectedAtom,
+} from "@/stores/product";
 
 export default function Product() {
-  const [product, setProduct] = useAtom(productState);
-  const [loading, setLoading] = React.useState(false);
+  const [{ loading }, fetchProducts] = useAtom(fetchProductAtom);
+  const [category] = useAtom(categoryAtom);
+  const [page] = useAtom(productPageAtom);
+  const [tags] = useAtom(tagsSelectedAtom)
 
   React.useEffect(() => {
-    product.data.length && setLoading(false);
-    setLoading(true);
-    axios(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
-      params: {
-        limit: product.limit,
-        skip: (product.page - 1) * product.limit,
-        category: product.category,
-        tags: product.tags.map((tag) => tag.name),
-      },
-    }).then((res) => {
-      setLoading(false);
-      setProduct({
-        ...product,
-        data: res.data.data,
-        count: Math.ceil(res.data.count / product.limit),
-      });
-    });
-
-    return () => {};
-  }, [product.page, product.category, product.limit, product.tags]);
+    fetchProducts();
+  }, [fetchProducts, category, page, tags]);
 
   if (loading) {
     return (

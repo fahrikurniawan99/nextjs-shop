@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/config/axiosInstance";
 import * as React from "react";
 
 interface Values {
@@ -18,10 +18,7 @@ export default async function handleRegister({
 }) {
   setLoading(true);
   try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-      values
-    );
+    const response = await axios.post("/auth/register", values);
     alert("register success!");
     redirect();
   } catch (error: any) {

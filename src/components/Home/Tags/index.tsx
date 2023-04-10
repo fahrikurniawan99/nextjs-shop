@@ -1,53 +1,46 @@
 import SChip from "@/components/ui/SChip";
-import { productState } from "@/stores/product";
+import {
+  categoryAtom,
+  fetchTagAtom,
+  productPageAtom,
+  tagsSelectedAtom,
+} from "@/stores/product";
 import { Box } from "@mui/material";
-import axios from "axios";
 import { useAtom } from "jotai";
 import * as React from "react";
 
 export default function Tags() {
-  const [product, setProduct] = useAtom(productState);
-  const [tags, setTags] = React.useState<Tag[]>();
+  const [category] = useAtom(categoryAtom);
+  const [tags, fetchTags] = useAtom(fetchTagAtom);
+  const [selectedTags, setSelectedTags] = useAtom(tagsSelectedAtom);
+  const [, setPage] = useAtom(productPageAtom);
 
   React.useEffect(() => {
-    axios(`${process.env.NEXT_PUBLIC_API_URL}/api/tags`, {
-      params: {
-        category: product.category,
-      },
-    }).then((res) => {
-      setTags(res.data.data);
-    });
-
-    return () => {};
-  }, [product.category]);
+    fetchTags();
+  }, [category, fetchTags]);
 
   return (
     <Box display={"flex"} gap={1} width={"100%"} flexWrap={"wrap"}>
-      {tags &&
-        tags.map((tag: Tag) => {
-          const isDeletable = product.tags.includes(tag);
-          return (
-            <SChip
-              key={tag._id}
-              onDelete={() => {
-                setProduct({
-                  ...product,
-                  tags: product?.tags?.filter((item) => item._id !== tag._id),
-                  page: 1,
-                });
-              }}
-              onClick={() => {
-                setProduct({
-                  ...product,
-                  tags: [...product.tags, tag],
-                  page: 1,
-                });
-              }}
-              isDeletable={isDeletable ? true : false}
-              label={tag.name}
-            />
-          );
-        })}
+      {tags.map((tag: Tag) => {
+        const isDeletable = selectedTags.includes(tag);
+        return (
+          <SChip
+            key={tag._id}
+            onDelete={() => {
+              setSelectedTags(
+                selectedTags.filter((item) => item._id !== tag._id)
+              );
+              setPage(1 as number);
+            }}
+            onClick={() => {
+              setSelectedTags([...selectedTags, tag]);
+              setPage(1 as number);
+            }}
+            isDeletable={isDeletable ? true : false}
+            label={tag.name}
+          />
+        );
+      })}
     </Box>
   );
 }

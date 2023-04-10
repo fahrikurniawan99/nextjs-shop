@@ -1,9 +1,11 @@
+import { cartAtom } from "@/stores/cart";
 import {
   SearchOutlined,
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Badge, Box, IconButton } from "@mui/material";
+import { useAtom } from "jotai";
 import { useRouter } from "next/router";
 
 export default function Menu({
@@ -14,6 +16,7 @@ export default function Menu({
   openDrawer: () => void;
 }) {
   const router = useRouter();
+  const [cart] = useAtom(cartAtom)
 
   return (
     <Box display={"flex"} color={"GrayText"}>
@@ -24,7 +27,7 @@ export default function Menu({
         <SearchOutlined style={{ fontSize: "1.2rem" }} />
       </IconButton>
       <IconButton onClick={openDrawer}>
-        <Badge badgeContent={4} color="primary">
+        <Badge badgeContent={cart.length} color="primary">
           <ShoppingCartOutlined style={{ fontSize: "1.2rem" }} />
         </Badge>
       </IconButton>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/config/axiosInstance";
 import * as React from "react";
 
 interface Values {
@@ -9,19 +9,18 @@ interface Values {
 export default async function handleLogin({
   values,
   setLoading,
+  setAuth,
 }: {
   values: Values;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setAuth: ({ token, id }: { token: string; id: string }) => void;
 }) {
   setLoading(true);
   try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-      values
-    );
+    const response = await axios.post("/auth/login", values);
     alert("login success!");
-    localStorage.setItem("token", response.data.token);
-    window.location.reload()
+    setAuth({ token: response.data.token, id: response.data._id });
+    window.location.reload();
   } catch (error: any) {
     if (error.response.data.message) {
       return alert(error.response.data.message);
